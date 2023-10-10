@@ -1,39 +1,46 @@
-class Rotor():
+# https://github.com/Pinkulani/Cryptography/tree/main/Enigma
+import random
+
+class Rotor(object):
     def __init__(self):
-        self.Start = "A"
-        self.Letter = self.Start
-        self.Name = "!"
-
-    def State(self):
-        print(self.Letter)
-
+        self.Name = ""
+        self.Letter = "A"
+        self.Dictionary = "ABCDEFGHIJKLMOPQRSTUVXYZ"
+        self.Encryption = self.Dictionary
+        self.Number = 1
+    
     def Rename(self, Name):
         self.Name = str(Name)
+
+    def Turn(self):
+        self.Number += 1
+        self.Letter = self.Dictionary[self.Number]
+
+    def Shuffle(self):
+        random.shuffle(self.Encryption)
+
+    def Status(self):
+        print("Rotor: ", self.Name)
+        print("Letter: ", self.Letter)
+        print("Number: ", self.Number)
+        print("Original Alphabet: ", self.Dictionary)
+        print("(New) Alphabet: ", self.Encryption, "\n")
     
-    def Settings(self):
-        print("This is ", self.Name)
-        print("Start Position: ", self.Start)
+    def Reset(self):
+        if self.Number == 26:
+            self.Number = 1
 
-    def Position(self, Position):
-        self.Start = str(Position)
+# Create Classes
+Wheel = []
+for Name in ["Wheel1", "Wheel2", "Wheel3"]:
+    Object = Rotor()
+    Object.Name = Name
+    Wheel.append(Object)
 
-print("* Enigma * \n")
+# Name
+for X in range(len(Wheel)):
+    Wheel[X].Rename(X+1)
 
-One = Rotor()
-Two = Rotor()
-Three = Rotor()
-
-# Names
-One.Rename("Rotor 1")
-Two.Rename("Rotor 2")
-Three.Rename("Rotor 3")
-
-# Output
-
-One.Settings()
-print("")
-
-Two.Settings()
-print("")
-
-Three.Settings()
+Wheel[0].Status()
+Wheel[1].Status()
+Wheel[2].Status()
