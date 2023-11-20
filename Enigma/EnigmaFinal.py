@@ -1,3 +1,5 @@
+# https://github.com/Pinkulani/Cryptography/tree/main/Enigma
+# Emilia @ 20.11.2023
 import random
 
 # To avoid creating Pointers instead of a new array
@@ -11,6 +13,14 @@ def CopyArray(Array):
 def ShuffleArray(Array):
     random.shuffle(Array)
     return Array
+
+# Translate Letter to Number in Alphabet Order (A = 0, C = 2)
+Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+def LetterToNumber(Letter):
+    Letter = Letter.upper() # Enigma has no lowercase
+    for X in range(0, len(Alphabet)):
+        if Letter == Alphabet[X]:
+            return X
 
 # Enigma
 class Enigma:
@@ -36,23 +46,25 @@ class Enigma:
     def Encrypt(self):
         for X in range(0, len(self.Text)):
             match self.Text[X]:
+                # Check invalid characters
                 case ",":
                     continue
                 case "'":
                     continue
                 case " ":
                     continue
-
                 case _:
                     self.Encryptor()
 
-    def Encryptor(self): # Bug: Doesn't work like this needs L to be translated to be number
+    def Encryptor(self): # Letter will be translated to be number to route a new letter
         L = self.Counter # Counter = Current Letter
         # Rotor 1
         L = self.A[L]
         # Rotor 2
+        L = LetterToNumber(L)
         L = self.B[L]
         # Rotor 3
+        L = LetterToNumber(L)
         L = self.C[L]
 
 Enigma = Enigma()
