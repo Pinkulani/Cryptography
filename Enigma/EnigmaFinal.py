@@ -66,7 +66,12 @@ class Enigma:
         # Rotor 3
         L = LetterToNumber(L)
         L = self.C[L]
+        self.Encrypted.append(L)
+
+    def Output(self):
+        print("Encrypted Text: ", self.Encrypted)
 
 Enigma = Enigma()
 Enigma.Start()
 Enigma.TextInput("Hello, I'm a stinky bunny")
+Enigma.Output()
