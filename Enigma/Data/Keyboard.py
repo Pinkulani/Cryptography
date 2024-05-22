@@ -26,3 +26,6 @@ class Keyboard:
                     continue
                 case _:
                     self.Text.append(MSG[X].upper()) # Only Latin script uppercase
+    
+    def Return(self):
+        return self.Text
