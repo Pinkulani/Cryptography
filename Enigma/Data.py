@@ -10,8 +10,23 @@ class Data:
         self.Reflector = self.Reflector(Reflector)
         self.Extra = self.Rotor(Extra)
 
-    def ReturnAlphabet(self):
-        return self.Alphabet
+    def ReturnStatic(self):
+        return self.Static
+    
+    def ReturnSystem(self):
+        return self.System
+    
+    def ReturnWiring(self):
+        return self.Wiring
+    
+    def ReturnNotches(self):
+        return self.Notches
+    
+    def ReturnReflector(self):
+        return self.Reflector
+    
+    def ReturnExtra(self):
+        return self.Extra
 
     def System(self, Number):
         match Number:
