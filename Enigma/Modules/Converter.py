@@ -1,15 +1,15 @@
 class Converter:
-    def __init__(self, Alphabet):
-        self.Alphabet = Alphabet
-        self.Len = len(self.Alphabet)
+    def __init__(self, System):
+        self.System = System
+        self.Len = len(self.System)
 
     def LetterToNumber(self, Letter): # A -> 0; B -> 1
         for X in range(0, self.Len):
-            if Letter == self.Alphabet[X]:
+            if Letter == self.System[X]:
                 return X # Int
             
     def NumberToLetter(self, Number): # 0 -> A; 1 -> B
-        return self.Alphabet[Number] # Char
+        return self.System[Number] # Char
     
     def LettersToNumbers(self, Letters): # ABCDE -> 01234
         Numbers = []
