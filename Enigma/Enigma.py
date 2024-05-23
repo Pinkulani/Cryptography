@@ -30,5 +30,17 @@ class Enigma:
         else:
             self.Data = Data(Static, System, Rotors, Reflector)
 
+        self.Setup()
+    
+    def Setup(self):
+        self.Static = self.Data.ReturnStatic()
+        self.System = self.Data.ReturnSystem()
+        self.Wiring = self.Data.ReturnWiring()
+        self.Notches = self.Data.ReturnNotches()
+        self.Reflector = self.Data.ReturnReflector()
+        self.Extra = self.Data.ReturnExtra()
+
+        self.Converter = Converter(self.System)
+
 if __name__ == "__main__":
     App = Enigma()
