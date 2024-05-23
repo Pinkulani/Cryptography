@@ -1,26 +1,29 @@
 class Keyboard:
-    def __init__(self, System):
+    def __init__(self, System: str):
         self.System = System
-        self.Input()
-        self.Filter()
+        self.Len = len(self.Sytem)
+        self.Text = None
 
-    def Input(self): # Unfiltered
+    def Input(self):
         self.Text = str(input("Input: "))
 
     def Filter(self): # Only keeping Enigma-friendly characters
         Copy = self.Text
+        LenCopy = len(Copy)
         self.Text = []
-        Len = len(self.System)
-        if Len > 20: # Latin / Swedish
-            for X in range(0, len(Copy)):
-                for Y in range(0, Len):
-                    if Copy[X].upper() == self.System[Y]:
-                        self.Text.append(Copy[X].upper())
-        else: # Numerical
-            for Z in range(0, len(Copy)):
-                for L in range(0, Len):
-                    if Copy[Z] == self.System[L]:
-                        self.Text.append(Copy[Z])
-    
+
+        match self.Len: # Filter by Latin / Swedish or Numerical
+            case LatinSwedish if self.Len > 20:
+                for TextPosition in range(0, LenCopy):
+                    for SystemPosition in range(0, self.Len):
+                        if Copy[TextPosition].upper() == self.System[SystemPosition]:
+                            self.Text.append(Copy[TextPosition].upper())
+
+            case Numerical if self.Len < 10:
+                for TextPosition in range(0, LenCopy):
+                    for Number in range(0, self.Len):
+                        if Copy[TextPosition] == self.System[Number]: # Only string comparision possible
+                            self.Text.append(Copy[TextPosition])
+
     def ReturnText(self):
         return self.Text
