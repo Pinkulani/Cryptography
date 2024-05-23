@@ -1,44 +1,41 @@
 class Plugboard:
-    def __init__(self, System):
+    def __init__(self, System: str):
         self.System = System
-        self.Wiring = [] # Final Wiring
-        self.Text = None # Unfiltered Input
-        self.Input()
-        self.Filter()
+        self.Len = len(self.System)
+        self.Wiring = []
+        self.Text = None
+
+    def ReturnWiring(self):
+        return self.Wiring
 
     def Input(self):
-        print("Plugboard Format: AB DE GL")
-        self.Text = input("Connections: ")
+        print("   ", "Plugboard Format: AB DE GL")
+        print("   ", "Leave empty for no connections.")
+        self.Text = str(input("    Connections: "))
     
     def Filter(self):
-        NoSpace = [] # Filter out space
-        for X in range(0, len(self.Text)):
-            if self.Text[X].isalpha() == True:
-                NoSpace.append(self.Text[X].upper())
+        Clean = [] # Filter space
+        for Position in range(0, len(self.Text)):
+            if self.Text[Position].isalpha() == True:
+                Clean.append(self.Text[Position].upper())
+        
+        Connections = len(Clean)
+        match Connections: # Input validation
+            case 0:
+                print("   ", "No plugboard connections.")
+            case Wrong if Connections % 2 != 0:
+                print("   ", "Invalid input.")
+            case _:
+                WireStart = [] # Change letter from start to end position
+                WireEnd = []
+                for Pair in range(0, Connections, 2): # Format: [[A, B], [D, E], [G, L]]
+                    WireStart.append(Clean[Pair])
+                    WireEnd.append(Clean[Pair + 1])
 
-        if len(NoSpace) % 2 == 0: # Look for pairs
-            Connections = [] # Paired connections
-            for Y in range(0, len(NoSpace), 2):
-                Array = [NoSpace[Y], NoSpace[Y+1]]
-                Connections.append(Array) # Format: [[A, B], [D, E], [G, L]]
-        else:
-            print("Faulty input, skipping plugboard connections.") # Error
-
-        WireStart = [] # Change Letter from Start to End
-        WireEnd = []
-        for G in range(0, len(Connections)):
-            WireStart.append(Connections[G][0])
-            WireEnd.append(Connections[G][1])
-
-        TotalLetters = len(self.System)
-        self.Wiring = [0] * TotalLetters # Expand array and add existing wiring
-        for U in range(0, len(Connections)):
-            for H in range(0, TotalLetters):
-                if WireStart[U] == self.System[H]:
-                    self.Wiring[H] = WireEnd[U] # Format: [B, 0, 0, E, 0, 0, L, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-    def Switch(self, Letter):
-        if self.Wiring[Letter] == 0:
-            return Letter
-        else:
-            return self.Wiring[Letter]
+                self.Wiring = [0] * self.Len # Expand array to system length and add wiring
+                Cables = len(WireStart)
+                for ConnectionPosition in range(0, Cables):
+                    for SystemPosition in range(0, self.Len):
+                        if WireStart[ConnectionPosition] == self.System[SystemPosition]:
+                            self.Wiring[SystemPosition] = WireEnd[ConnectionPosition]
+                            # Format: [B, 0, 0, E, 0, 0, L, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
