@@ -2,110 +2,78 @@ from Modules.Converter import *
 from Modules.Keyboard import *
 from Modules.Lampboard import *
 from Modules.Plugboard import *
-from Modules.Rotor import *
+from Modules.Rotormechanism import *
 from Data import *
 
 class Enigma:
     def __init__(self):
-        self.Settings("I")
         self.Debug = True
+        self.Settings("I") # Automatically get settings for chosen model
+        self.Run()
 
-    def Settings(self, Model):
-        match Model:
-            case "I":
-                Static = 0
-                System = 0
-                Rotors = ["I", "II", "III"]
-                Reflector = "B"
-            case "M3":
-                Static = 0
-                System = 0
-                Rotors = ["VI", "VII", "VIII"]
-                Reflector = "B"
-            case "M4":
-                Static = 0
-                System = 0
-                Rotors = ["VI", "VII", "VIII"]
-                Extra = "Beta"
-                Reflector = "B-M4"
-
-        if Model == "M4":
-            self.Data = Data(Static, System, Rotors, Reflector, Extra)
-        else:
-            self.Data = Data(Static, System, Rotors, Reflector)
-
-        self.Setup()
-    
-    def Setup(self):
-        self.Static = self.Data.ReturnStatic()
+    def Settings(self, Model: str):
+        self.Data = Data(Model)
+        self.Name = self.Data.ReturnName()
+        self.User = self.Data.ReturnUser()
         self.System = self.Data.ReturnSystem()
-        self.Wiring = self.Data.ReturnWiring()
-        self.Notches = self.Data.ReturnNotches()
+        self.PlugboardEnabled = self.Data.ReturnPlugboard()
+
+        # Wiring
+        self.Static = self.Data.ReturnStatic()
         self.Reflector = self.Data.ReturnReflector()
-        self.Extra = self.Data.ReturnExtra()
+        self.Wiring = self.Data.ReturnWiring() # For Rotors
+        self.Notches = self.Data.ReturnNotches()
+        self.ExtraEnabled = self.Data.ReturnExtra()
 
-        self.Converter = Converter(self.System)
-        self.Lampboard = Lampboard()
-        self.Keyboard = Keyboard(self.System)
-        self.Text = self.Keyboard.ReturnText() # Filtered Text
-        self.Plugboard = Plugboard(self.System)
-
-        self.RotorCount = len(self.Wiring) # Amount of Rotors
-        self.RotorConnections = len(self.Wiring[0]) # Amount of connections per Rotor
-        self.Rotors = [0] * self.RotorCount
-        for X in range(0, self.RotorCount):
-            self.Rotors[X] = Rotor(self.Converter.LettersToNumbers(self.Wiring[X]), self.Converter.LettersToNumbers(self.Notches[X]))
-
+        # Info
+        self.RotorCount = 3
+        self.RotorConnections = len(self.System) # Possible connections for chosen system
         self.Offset = [0] * self.RotorCount # Default Offset: AAA
-        self.Current = None # Current Letter
-        self.Previous = None # Previous Letter for debugging
+        self.Text = None
+        self.Current = None # Current letter
+        self.Previous = None # Previous letter for debugging
 
-        self.Table()
+        # Create
+        self.Keyboard = Keyboard(self.System)
+        self.Lampboard = Lampboard()
 
-    def Rotormechanism(self):
-        Copy = self.Text
-        self.Text = [] # Final Text
-        for X in range(0, len(Copy)):
-            self.Current = Copy[X]
+        if self.RotorConnections > 20: # Numerical doesn't need conversion
+            self.Converter = Converter(self.System)
 
-    def Table(self): # Print debug info
-        if self.Extra != None:
-            TableLen = self.RotorCount + 3 # Enigma M4
-        else:
-            TableLen = self.RotorCount + 2
+        if self.PlugboardEnabled == True:
+            self.Plugboard = Plugboard(self.System)
 
-        # Heading
-        for K in range(0, TableLen + 1): # Numbers + Static + Amount of Rotors + Reflector + Extra
-            match K:
-                case 0: # Numbers
-                    print("Numbers", end=" | ")
-                case 1:
-                    print("Static", end=" | ")
-                case Reflector if K == TableLen: # Last column
-                    print("Reflector")
-                case _:
-                    print("Rotor", K-1, end=" | ")
-        
-        # Content
-        for M in range(0, self.RotorConnections): # Numbers + Wiring -> Static -> Rotors -> Reflector -> Extra
-            for S in range(0, TableLen):
-                match S:
-                    case 0: # First column
-                        match M:
-                            case SMALL if (M >= 0) and (M < 10): 
-                                print(M, end=" | ") # Space for single digit numbers
-                            case _:
-                                print(M, end=" | ") # Space for double digit numbers
-                    case 1:
-                        print(self.Static[M], end=" | ")
-                    case End if S == TableLen: # Reflector
-                        print(self.Reflector[M])
-                    case _:
-                        print(self.Wiring[S-2][M], end=" | ")
+        if self.ExtraEnabled != None: # Enigma M4
+            self.Extra = Reflector(self.Extra)
+            self.ExtraEnabled = True
 
-            print("")
+        self.Static = Reflector(self.Static)
+        self.Reflector = Reflector(self.Reflector)
 
+        self.Rotor = [0] * self.RotorCount
+        for Number in range(self.RotorCount):
+            self.Rotor[Number] = Rotor(self.Wiring[Number], self.Notches[Number])
 
+    def Start(self):
+        print("Model:", self.Name)
+        print("   ", "User:", self.User)
+        print("   ", "Specifications in config file")
+
+    def Run(self):
+        self.Start()
+        # Input
+        self.Keyboard.Input()
+        self.Keyboard.Filter()
+        self.Text = self.Keyboard.ReturnText()
+        if self.PlugboardEnabled == True:
+            self.Plugboard.Input()
+            self.Plugboard.Filter()
+            Connections = self.Plugboard.ReturnWiring()
+            self.Plugboard = Reflector(Connections)
+
+        # Output
+        self.Lampboard.Input(self.Text)
+        self.Lampboard.Output()
 
 if __name__ == "__main__":
     App = Enigma()
