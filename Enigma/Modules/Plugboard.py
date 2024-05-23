@@ -38,7 +38,7 @@ class Plugboard:
                     self.Wiring[H] = WireEnd[U] # Format: [B, 0, 0, E, 0, 0, L, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     def Switch(self, Letter):
-        if self.Wiring[Letter] == 0: # 
+        if self.Wiring[Letter] == 0:
             return Letter
         else:
             return self.Wiring[Letter]
