@@ -24,8 +24,8 @@ class Keyboard:
                             Filtered.append(Text[PositionText].upper())
 
             case Numerical if LenSystem < 10:
-                for PositionText in range(0, LenText):
-                    for Number in range(0, LenSystem):
+                for PositionText in range(LenText):
+                    for Number in range(LenSystem):
                         if Text[PositionText] == self.System[Number]: # Only string comparision possible
                             Filtered.append(Text[PositionText])
 
