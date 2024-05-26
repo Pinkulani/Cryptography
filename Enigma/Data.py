@@ -1,286 +1,202 @@
 class Data:
     def __init__(self, Model: str):
-        self.Setup(Model)
-    
-    def Setup(self, ID: str):
-        match ID:
-            case "A-133":
-                Name = "Enigma A-133"
-                User = "Swedish SGS"
-                System = 1
-                Plugboard = False
-                Static = "ETW-A-133"
-                Reflector = "UKW-A-133"
-                Rotors = ["I-A-133", "II-A-133", "III-A-133"]
-                Extra = None
+        # Defaults
+        self.Cogwheel = False
+        self.System = 0
+        self.Plugboard = False
+        self.ExtraRotor = False
+        self.ExtraReflector = False
+        self.Entry = None
+        self.Reflector = None
+        self.Rotors = None
+
+        match Model:
             case "D":
-                Name = "Enigma D"
-                User = "Commercial"
-                System = 0
-                Plugboard = False
-                Static = "ETW-D"
-                Reflector = "UKW-D"
-                Rotors = ["I-D", "II-D", "III-D"]
-                Extra = None
+                self.Entry = "ETW-D"
+                self.Reflector = "UKW-D"
+                self.Rotors = ["I-D", "II-D", "III-D"]
+            case "K":
+                self.Entry = "ETW-D"
+                self.Reflector = "UKW-D"
+                self.Rotors = ["I-K", "II-K", "III-K"]
             case "I":
-                Name = "Enigma I"
-                User = "German Army & Air Force"
-                System = 0
-                Plugboard = True
-                Static = "ETW"
-                Reflector = "UKW-B"
-                Rotors = ["I", "II", "III"]
-                Extra = None
+                self.Plugboard = True
+                self.Entry = "ETW"
+                self.Reflector = "UKW-B"
+                # self.ExtraReflector = "UKW-D"
+                self.Rotors = ["I", "II", "III"]
             case "M3":
-                Name = "Enigma M3"
-                User = "German Navy"
-                System = 0
-                Plugboard = True
-                Static = "ETW"
-                Reflector = "UKW-B"
-                Rotors = ["VI", "VII", "VIII"]
-                Extra = None
+                self.Plugboard = True
+                self.Entry = "ETW"
+                self.Reflector = "UKW-B"
+                # self.ExtraReflector = "UKW-D"
+                self.Rotors = ["I", "II", "III"]
             case "M4":
-                Name = "Enigma M4"
-                User = "German Navy"
-                System = 0
-                Plugboard = True
-                Static = "ETW"
-                Reflector = "UKW-B-M4"
-                Rotors = ["VI", "VII", "VIII"]
-                Extra = "Beta" # Enigma M4 exclusive
-            case "G":
-                Name = "Enigma G"
-                User = "Commercial"
-                System = 0
-                Plugboard = False
-                Static = "ETW-D"
-                Reflector = "UKW-D"
-                Rotors = ["I-G", "II-G", "III-G"]
-                Extra = None
-            case "T":
-                Name = "Enigma T"
-                User = "Japanese Army"
-                System = 0
-                Plugboard = False
-                Static = "ETW-T"
-                Reflector = "UKW-T"
-                Rotors = ["I-T", "II-T", "III-T"]
-                Extra = None
+                self.Plugboard = True
+                self.ExtraRotor = "Beta"
+                self.Entry = "ETW"
+                self.Reflector = "UKW-B-Thin"
+                # self.ExtraReflector = "UKW-D"
+                self.Rotors = ["I", "II", "III"]
+            case "A28":
+                self.Cogwheel = True
+                self.Entry = "ETW-A28"
+                self.Reflector = "UKW-A28"
+                self.Rotors = ["I-A28", "II-A28", "III-A28"]
+            case "G31":
+                self.Cogwheel = True
+                self.Plugboard = True
+                self.Entry = "ETW"
+                self.Reflector = "UKW-G31"
+                self.Rotors = ["I-G31", "II-G31", "III-G31"]
             case "Z":
-                Name = "Enigma Z"
-                User = "Various"
-                System = 2
-                Plugboard = False
-                Static = "ETW-Z"
-                Reflector = "UKW-Z"
-                Rotors = ["I-Z", "II-Z", "III-Z"]
-                Extra = None
-        
-        self.Info(Name, User, System, Plugboard, Static, Reflector, Rotors, Extra)
+                self.Cogwheel = True
+                self.System = 2
+                self.Entry = "ETW-Z"
+                self.Reflector = "UKW-Z"
+                self.Rotors = ["I-Z", "II-Z", "III-Z"]
+            case "A-133":
+                self.System = 1
+                self.Entry = "ETW-A-133"
+                self.Reflector = "UKW-A-133"
+                self.Rotors = ["I-A-133", "II-A-133", "III-A-133"]
+            case "T":
+                self.Entry = "ETW-T"
+                self.Reflector = "UKW-T"
+                self.Rotors = ["I-T", "II-T", "III-T"]
 
-    def Info(self, Name: str, User: str, System: int, Plugboard: bool, Static: str, Reflector: str, Rotors: str, Extra: str):
-        self.Name = Name
-        self.User = User
-        self.System = self.System(System)
-        self.Plugboard = Plugboard
-        self.Static = self.Static(Static)
-        self.Reflector = self.Reflector(Reflector)
-        self.Wiring = []
-        self.Notches = []
-        for Number in range(0, 3):
-            self.Wiring.append(self.Rotor(Rotors[Number]))
-            self.Notches.append(self.Notch(Rotors[Number]))
-        self.Extra = self.Rotor(Extra)
-
-    def ReturnName(self):
-        return self.Name
-    
-    def ReturnUser(self):
-        return self.User
-    
-    def ReturnSystem(self):
-        return self.System
-    
-    def ReturnPlugboard(self):
-        return self.Plugboard
-    
-    def ReturnStatic(self):
-        return self.Static
-    
-    def ReturnReflector(self):
-        return self.Reflector
-    
-    def ReturnWiring(self):
-        return self.Wiring
-    
-    def ReturnNotches(self):
-        return self.Notches
-    
-    def ReturnExtra(self):
-        return self.Extra
-    
-    def System(self, ID: int):
-        match ID:
+    def ReturnSystem(self) -> str:
+        match self.System:
             case 0: # Latin
                 return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
             case 1: # Swedish
                 return "ABCDEFGHIJKLMNOPQRSTUVXYZÅÄÖ"
             case 2: # Numerical
                 return "1234567890"
-
-    def Static(self, ID: str):
-        match ID:
-            case "ETW":
-                return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            case "ETW-A-133":
-                return "ABCDEFGHIJKLMNOPQRSTUVXYZÅÄÖ"
-            case "ETW-D":
-                return "QWERTZUIOASDFGHJKPYXCVBNML"
-            case "ETW-T":
-                return "KZROUQHYAIGBLWVSTDXFPNMCJE"
-            case "ETW-Z":
-                return "1234567890"
-
-    def Reflector(self, ID: str):
-        match ID:
-            case "UKW-A-133":
-                return "LDGBÄNCPSKJAVFZHXUIÅRMQÖOTEY"
-            case "UKW-D":
-                return "IMETCGFRAYSQBZXWLHKDVUPOJN"
-            case "UKW-A":
-                return "EJMZALYXVBWFCRQUONTSPIKHGD"
-            case "UKW-B":
-                return "YRUHQSLDPXNGOKMIEBFZCWVJAT"
-            case "UKW-C":
-                return "FVPJIAOYEDRZXWGCTKUQSBNMHL"
-            case "UKW-B-M4":
-                return "ENKQAUYWJICOPBLMDXZVFTHRGS"
-            case "UKW-C-M4":
-                return "RDOBJNTKVEHMLFCWZAXGYIPSUQ"
-            case "UKW-T":
-                return "GEKPBTAUMOCNILJDXZYFHWVQSR"
-            case "UKW-Z":
-                return "5079183642"
-    
-    def Rotor(self, ID: str):
-        match ID:
-            case "I-A-133":
-                return "PSBGÖXQJDHOÄUCFRTEZVÅINLYMKA"
-            case "II-A-133":
-                return "CHNSYÖADMOTRZXBÄIGÅEKQUPFLVJ"
-            case "III-A-133":
-                return "ÅVQIAÄXRJBÖZSPCFYUNTHDOMEKGL"
-            case "I-D":
-                return "LPGSZMHAEOQKVXRFYBUTNICJDW"
-            case "II-D":
-                return "SLVGBTFXJQOHEWIRZYAMKPCNDU"
-            case "III-D":
-                return "CJGDPSHKTURAWZXFMYNQOBVLIE"
-            case "I-G":
-                return "LPGSZMHAEOQKVXRFYBUTNICJDW"
-            case "II-G":
-                return "SLVGBTFXJQOHEWIRZYAMKPCNDU"
-            case "III-G":
-                return "CJGDPSHKTURAWZXFMYNQOBVLIE"
-            case "I":
-                return "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
-            case "II":
-                return "AJDKSIRUXBLHWTMCQGZNPYFVOE"
-            case "III":
-                return "BDFHJLCPRTXVZNYEIWGAKMUSQO"
-            case "IV":
-                return "ESOVPZJAYQUIRHXLNFTGKDCMWB"
-            case "V":
-                return "VZBRGITYUPSDNHLXAWMJQOFECK"
-            case "VI":
-                return "JPGVOUMFYQBENHZRDKASXLICTW"
-            case "VII":
-                return "NZJHGRCXMYSWBOUFAIVLPEKQDT"
-            case "VIII":
-                return "FKQHTLXOCBJSPDZRAMEWNIUYGV"
-            case "I-T":
-                return "KPTYUELOCVGRFQDANJMBSWHZXI"
-            case "II-T":
-                return "UPHZLWEQMTDJXCAKSOIGVBYFNR"
-            case "III-T":
-                return "QUDLYRFEKONVZAXWHMGPJBSICT"
-            case "IV-T":
-                return "CIWTBKXNRESPFLYDAGVHQUOJZM"
-            case "V-T":
-                return "UAXGISNJBVERDYLFZWTPCKOHMQ"
-            case "VI-T":
-                return "XFUZGALVHCNYSEWQTDMRBKPIOJ"
-            case "VII-T":
-                return "BJVFTXPLNAYOZIKWGDQERUCHSM"
-            case "VIII-T":
-                return "YMTPNZHWKODAJXELUQVGCBISFR"
-            case "I-Z":
-                return "6418270359"
-            case "II-Z":
-                return "5841097632"
-            case "III-Z":
-                return "3581620794"
+            
+    def ReturnExtraRotor(self):
+        match self.ExtraRotor:
             case "Beta":
                 return "LEYJVCNIXWPBQMDRTAKZGFUHOS"
             case "Gamma":
                 return "FSOKANUERHMBTIYCWLQPZXVGJD"
+            case False:
+                return False
             
-    def Notch(self, ID: str):
+    def ReturnExtraReflector(self):
+        match self.ExtraReflector:
+            case "UKW-D":
+                return "A0ZXWVUTSRQPON0MLKIHGFEDCB"
+            case False:
+                return False
+            
+    def ReturnEntry(self) -> str:
+        match self.Entry:
+            case "ETW":
+                return "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            case "ETW-D":
+                return "QWERTZUIOASDFGHJKPYXCVBNML"
+            case "ETW-A28":
+                return "QWERTZUIOASDFGHJKPYXCVBNML"
+            case "ETW-Z":
+                return "1234567890"
+            case "ETW-A-133":
+                return "ABCDEFGHIJKLMNOPQRSTUVXYZÅÄÖ"
+            case "ETW-T":
+                return "KZROUQHYAIGBLWVSTDXFPNMCJE"
+            
+    def ReturnReflector(self):
+        match self.Reflector:
+            case "UKW-A":
+                return ["EJMZALYXVBWFCRQUONTSPIKHGD", False]
+            case "UKW-B":
+                return ["YRUHQSLDPXNGOKMIEBFZCWVJAT", False]
+            case "UKW-C":
+                return ["FVPJIAOYEDRZXWGCTKUQSBNMHL", False]
+            case "UKW-B-Thin":
+                return ["ENKQAUYWJICOPBLMDXZVFTHRGS", False]
+            case "UKW-C-Thin":
+                return ["RDOBJNTKVEHMLFCWZAXGYIPSUQ", False]
+            case "UKW-D":
+                return ["IMETCGFRAYSQBZXWLHKDVUPOJN", False]
+            case "UKW-A28":
+                return ["IMETCGFRAYSQBZXWLHKDVUPOJN", False]
+            case "UKW-G31":
+                return ["RULQMZJSYGOCETKWDAHNBXPVIF", False]
+            case "UKW-Z":
+                return ["5079183642", "9"]
+            case "UKW-A-133":
+                return ["LDGBÄNCPSKJAVFZHXUIÅRMQÖOTEY", False]
+            case "UKW-T":
+                return ["GEKPBTAUMOCNILJDXZYFHWVQSR", False]
+            
+    def ReturnRotor(self, ID: str) -> str:
         match ID:
-            case "I-A-133":
-                return "G"
-            case "II-A-133":
-                return "G"
-            case "III-A-133":
-                return "G"
             case "I-D":
-                return "G"
+                return ["LPGSZMHAEOQKVXRFYBUTNICJDW", "Z"]
             case "II-D":
-                return "M"
+                return ["SLVGBTFXJQOHEWIRZYAMKPCNDU", "Z"]
             case "III-D":
-                return "V"
-            case "I-G":
-                return "ACDEHIJKMNOQSTWXY"
-            case "II-G":
-                return "ABDGHIKLNOPSUVY"
-            case "III-G":
-                return "CEFIMNPSUVZ"
+                return ["CJGDPSHKTURAWZXFMYNQOBVLIE", "Z"]
+            case "I-K":
+                return ["LPGSZMHAEOQKVXRFYBUTNICJDW", "Y"]
+            case "II-K":
+                return ["SLVGBTFXJQOHEWIRZYAMKPCNDU", "E"]
+            case "III-K":
+                return ["CJGDPSHKTURAWZXFMYNQOBVLIE", "N"]
             case "I":
-                return "Y"
+                return ["EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q"]
             case "II":
-                return "M"
+                return ["AJDKSIRUXBLHWTMCQGZNPYFVOE", "E"]
             case "III":
-                return "D"
+                return ["BDFHJLCPRTXVZNYEIWGAKMUSQO", "V"]
             case "IV":
-                return "R"
+                return ["ESOVPZJAYQUIRHXLNFTGKDCMWB", "J"]
             case "V":
-                return "H"
+                return ["VZBRGITYUPSDNHLXAWMJQOFECK", "Z"]
             case "VI":
-                return "HU"
+                return ["JPGVOUMFYQBENHZRDKASXLICTW", "ZM"]
             case "VII":
-                return "HU"
+                return ["NZJHGRCXMYSWBOUFAIVLPEKQDT", "ZM"]
             case "VIII":
-                return "HU"
-            case "I-T":
-                return "EHMSY"
-            case "II-T":
-                return "EHNTZ"
-            case "III-T":
-                return "EHMSY"
-            case "IV-T":
-                return "EHNTZ"
-            case "V-T":
-                return "GKNSZ"
-            case "VI-T":
-                return "FMQUY"
-            case "VII-T":
-                return "GKNSZ"
-            case "VIII-T":
-                return "FMQUY"
+                return ["FKQHTLXOCBJSPDZRAMEWNIUYGV", "ZM"]
+            case "I-A28":
+                return ["LPGSZMHAEOQKVXRFYBUTNICJDW", "SUVWZABCEFGIKLOPQ"]
+            case "II-A28":
+                return ["SLVGBTFXJQOHEWIRZYAMKPCNDU", "STVYZACDFGHKMNQ"]
+            case "III-A28":
+                return ["CJGDPSHKTURAWZXFMYNQOBVLIE", "UWXAEFHKMNR"]
+            case "I-G31":
+                return ["DMTWSILRUYQNKFEJCAZBPGXOHV", "SUVWZABCEFGIKLOPQ"]
+            case "II-G31":
+                return ["HQZGPJTMOBLNCIFDYAWVEUSRKX", "STVYZACDFGHKMNQ"]
+            case "III-G31":
+                return ["UQNTLSZFMREHDPXKIBVYGJCWOA", "UWXAEFHKMNR"]
             case "I-Z":
-                return "2"
+                return ["6418270359", "9"]
             case "II-Z":
-                return "2"
+                return ["5841097632", "9"]
             case "III-Z":
-                return "2"
+                return ["3581620794", "9"]
+            case "I-A-133":
+                return ["PSBGÖXQJDHOÄUCFRTEZVÅINLYMKA", "Ä"]
+            case "II-A-133":
+                return ["CHNSYÖADMOTRZXBÄIGÅEKQUPFLVJ", "Ä"]
+            case "III-A-133":
+                return ["ÅVQIAÄXRJBÖZSPCFYUNTHDOMEKGL", "Ä"]
+            case "I-T":
+                return ["KPTYUELOCVGRFQDANJMBSWHZXI", "WZEKQ"]
+            case "II-T":
+                return ["UPHZLWEQMTDJXCAKSOIGVBYFNR", "WZFLR"]
+            case "III-T":
+                return ["QUDLYRFEKONVZAXWHMGPJBSICT", "WZEKQ"]
+            case "IV-T":
+                return ["CIWTBKXNRESPFLYDAGVHQUOJZM", "WZFLR"]
+            case "V-T":
+                return ["UAXGISNJBVERDYLFZWTPCKOHMQ", "YCFKR"]
+            case "VI-T":
+                return ["XFUZGALVHCNYSEWQTDMRBKPIOJ", "XEIMQ"]
+            case "VII-T":
+                return ["BJVFTXPLNAYOZIKWGDQERUCHSM", "YCFKR"]
+            case "VIII-T":
+                return ["YMTPNZHWKODAJXELUQVGCBISFR", "XEIMQ"]
