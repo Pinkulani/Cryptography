@@ -4,11 +4,11 @@ This project aims to simulate all popular Enigma Models with their latest versio
 
 Check the Wiring Document for more details.
 
-### Prerequisites
+## Prerequisites
 
 The Python programming language.
 
-### Supported Models
+## Supported Models
 
 **Commercial machines**
 - Enigma D
