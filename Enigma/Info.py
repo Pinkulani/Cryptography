@@ -92,7 +92,7 @@ Model = {
 class Info:
     def __init__(self, ID: str):
         self.Names = Model[ID]
-        self.Wiring = (System[self.Names[0]], Entry[self.Names[1]], Reflector[self.Names[2]], [Rotor[self.Names[3][0]], Rotor[self.Names[3][0]], Rotor[self.Names[3][0]]], Extra[self.Names[4]], Extra[self.Names[5]])
+        self.Wiring = (System[self.Names[0]], Entry[self.Names[1]], Reflector[self.Names[2]], [Rotor[self.Names[3][0]], Rotor[self.Names[3][1]], Rotor[self.Names[3][2]]], Extra[self.Names[4]], Extra[self.Names[5]])
         self.Check(ID)
     
     def Check(self, ID: str) -> bool:
