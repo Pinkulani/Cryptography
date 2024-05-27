@@ -13,14 +13,12 @@ Entry = {
 }
 
 Rotor = {
-    # Commercial Rotors
     "I-D": ("LPGSZMHAEOQKVXRFYBUTNICJDW", "Z"),
     "II-D": ("SLVGBTFXJQOHEWIRZYAMKPCNDU", "Z"),
     "III-D": ("CJGDPSHKTURAWZXFMYNQOBVLIE", "Z"),
     "I-K": ("LPGSZMHAEOQKVXRFYBUTNICJDW", "Y"),
     "II-K": ("SLVGBTFXJQOHEWIRZYAMKPCNDU", "E"),
     "III-K": ("CJGDPSHKTURAWZXFMYNQOBVLIE", "N"),
-    # Military Rotors
     "I": ("EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q"),
     "II": ("AJDKSIRUXBLHWTMCQGZNPYFVOE", "E"),
     "III": ("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V"),
@@ -29,7 +27,6 @@ Rotor = {
     "VI": ("JPGVOUMFYQBENHZRDKASXLICTW", "ZM"),
     "VII": ("NZJHGRCXMYSWBOUFAIVLPEKQDT", "ZM"),
     "VIII": ("FKQHTLXOCBJSPDZRAMEWNIUYGV", "ZM"),
-    # Cogwheel Rotors
     "I-A28": ("LPGSZMHAEOQKVXRFYBUTNICJDW", "SUVWZABCEFGIKLOPQ"),
     "II-A28": ("SLVGBTFXJQOHEWIRZYAMKPCNDU", "STVYZACDFGHKMNQ"),
     "III-A28": ("CJGDPSHKTURAWZXFMYNQOBVLIE", "UWXAEFHKMNR"),
@@ -39,7 +36,6 @@ Rotor = {
     "I-Z": ("6418270359", "9"),
     "II-Z": ("5841097632", "9"),
     "III-Z": ("3581620794", "9"),
-    # Special Rotors
     "I-A-133": ("PSBGÖXQJDHOÄUCFRTEZVÅINLYMKA", "Ä"),
     "II-A-133": ("CHNSYÖADMOTRZXBÄIGÅEKQUPFLVJ", "Ä"),
     "III-A-133": ("ÅVQIAÄXRJBÖZSPCFYUNTHDOMEKGL", "Ä"),
@@ -77,18 +73,18 @@ Extra = {
 
 # System, Entry wheel, Reflector, Rotor 1, Rotor 2, Rotor 3, Extra Rotor, Special Reflector
 Model = {
-    # Commercial Rotors
+    # Commercial machines
     "D": ("Latin", "ETW-D", "UKW-D", ["I-D", "II-D", "III-D"], "None", "None"),
     "K": ("Latin", "ETW-D", "UKW-D", ["I-K", "II-K", "III-K"], "None", "None"),
-    # Military Rotors
+    # Military machines
     "I": ("Latin", "ETW", "UKW-B", ["I", "II", "III"], "None", "None"),
     "M3": ("Latin", "ETW", "None", ["I", "II", "III"], "None", "UKW-Special-D"),
     "M4": ("Latin", "ETW", "UKW-B-Thin", ["I", "II", "III"], "Beta", "None"),
-    # Cogwheel Rotors
+    # Cogwheel machines
     "A28": ("Latin", "ETW-D", "UKW-A28", ["I-A28", "II-A28", "III-A28"], "None", "None"),
     "G31": ("Latin", "ETW", "UKW-G31", ["I-G31", "II-G31", "III-G31"], "None", "None"),
     "Z": ("Numerical", "ETW-Z", "UKW-Z", ["I-Z", "II-Z", "III-Z"], "None", "None"),
-    # Special Rotors
+    # Special machines
     "A-133": ("Swedish", "ETW-A-133", "UKW-A-133", ["I-A-133", "II-A-133", "III-A-133"], "None", "None"),
     "T": ("Latin", "ETW-T", "UKW-T", ["I-T", "II-T", "III-T"], "None", "None")
 }
