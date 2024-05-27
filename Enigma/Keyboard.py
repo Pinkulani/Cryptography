@@ -3,30 +3,15 @@ class Keyboard:
         self.System = System
 
     def Run(self) -> str:
-        Text = self.Input()
-        Text = self.Filter(Text) # Only keeping Enigma-friendly characters
-        return Text
+        return self.Filter(self.Input())
 
     def Input(self) -> str:
         return str(input("Input: "))
 
-    def Filter(self, Text: str) -> str:
-        LenSystem = len(self.System)
-        LenText = len(Text)
-        Filtered = []
-
-        # Filter by Latin / Swedish or Numerical
-        match LenSystem:
-            case LatinSwedish if LenSystem > 20:
-                for PositionText in range(LenText):
-                    for PositionSystem in range(LenSystem):
-                        if Text[PositionText].upper() == self.System[PositionSystem]:
-                            Filtered.append(Text[PositionText].upper())
-
-            case Numerical if LenSystem < 20:
-                for PositionText in range(LenText):
-                    for Number in range(LenSystem):
-                        if Text[PositionText] == self.System[Number]: # Only string comparision possible
-                            Filtered.append(Text[PositionText])
-
-        return Filtered
+    def Filter(self, Unfiltered: str) -> str: # Only keeping Enigma-friendly characters
+        Clean = []
+        for Letter in Unfiltered.upper():
+            if Letter in self.System:
+                Clean.append(Letter)
+                        
+        return Clean
