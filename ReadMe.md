@@ -1,8 +1,6 @@
 # Eminigma
 
-This project aims to simulate all popular Enigma Models with their latest version excluding unofficial rewirings. The simulation accounts for the double step anomaly which wouldn't happen in a purely logic-based digital program.
-
-Check the Wiring Document for more details.
+This project aims to simulate all popular Enigma Models with their latest version. The Simulator also accounts for the double step anomaly which wouldn't happen in a purely logic-based digital program.
 
 ## Prerequisites
 
@@ -10,20 +8,17 @@ The Python programming language.
 
 ## Supported Models
 
-**Commercial machines**
+- Enigma A-133
 - Enigma D
-- Enigma K
-
-**Military machines**
 - Enigma I
+- Enigma K
+- Enigma KD
 - Enigma M3
 - Enigma M4
-
-**Cogwheel machines**
-- Enigma A28
-- Enigma G31
-- Enigma Z
-  
-**Special machines**
-- Enigma A-133
 - Enigma T
+- Enigma Z
+- Norway Enigma
+- Rocket I
+- Swiss K
+- Zählwerk A28
+- Zählwerk G31
